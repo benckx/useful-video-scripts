@@ -29,7 +29,7 @@ def main():
   file_path = sys.argv[1]
   length = 60
   offset = 0
-  re_encode = False
+  re_encode = None
 
   if len(sys.argv) > 1:
     if len(sys.argv) > 1:
@@ -42,10 +42,14 @@ def main():
         elif param == '--offset':
           offset = int(params[idx + 1])
         elif param == '--reencode':
-          re_encode = True
+          re_encode = params[idx + 1]
         elif param.startswith('--'):
           print('param {} not known'.format(param))
-          exit(0)
+          exit(1)
+
+  if re_encode is not None and re_encode != "mp4" and re_encode != "mov":
+    print('reencode format {} not known'.format(re_encode))
+    exit(1)
 
   file_name = file_path.split('/')[-1]
   file_folder = file_path[0:file_path.find(file_name)]
@@ -78,10 +82,22 @@ def main():
     output_file = file_folder + file_name_no_extension + '_' + cut_num + '.mp4'
     command = 'mencoder -ss ' + ss + ' -endpos ' + endpos + ' -oac copy -ovc copy ' + file_path + ' -o ' + output_file
     subprocess.run(command, shell=True)
-    if re_encode:
-      re_encode_output = file_folder + file_name_no_extension + '_' + cut_num + '_encoded' + '.mp4'
-      encoding = '-c:v libx264 -profile:v high -crf 17 -pix_fmt yuv420p'
-      re_encode_command = 'ffmpeg -i ' + output_file + ' ' + encoding + ' ' + re_encode_output
+
+    if re_encode is not None:
+      re_encode_output_file = None
+      encoding = None
+
+      if re_encode == 'mp4':
+        re_encode_output_file = file_folder + file_name_no_extension + '_' + cut_num + '_encoded' + '.mp4'
+        encoding = '-c:v libx264 -profile:v high -crf 17 -pix_fmt yuv420p'
+      elif re_encode == 'mov':
+        re_encode_output_file = file_folder + file_name_no_extension + '_' + cut_num + '_encoded' + '.mov'
+        encoding = '-acodec copy -vcodec copy -f mov'
+
+      if re_encode_output_file is None or encoding is None:
+        exit(1)
+
+      re_encode_command = 'ffmpeg -i ' + output_file + ' ' + encoding + ' ' + re_encode_output_file
       subprocess.run(re_encode_command, shell=True)
       os.remove(output_file)
 
