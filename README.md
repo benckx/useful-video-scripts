@@ -3,11 +3,14 @@
 * ffmpeg
 * mencoder
 
-## Add bin to the path
 
-If you want to be able to use the tool from your terminal and from any location, 
-add the following line at the end of your `.bashrc` or you `.zshrc` 
-(change the location to match the location where you downloaded this repository):
+    sudo apt install ffmpeg mencoder
+
+## Add to PATH (optional)
+
+It's possible to use the scripts from the terminal by adding the following line 
+at the end of `.bashrc` or `.zshrc`  (change the location to match the location 
+where you downloaded this repository):
 
     export PATH=$PATH:~/projects/useful-video-scripts
 
