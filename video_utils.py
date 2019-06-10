@@ -1,3 +1,4 @@
+import os
 import subprocess
 
 import math
@@ -21,3 +22,18 @@ def seconds_to_timestamp(seconds: int):
   seconds_padded = str(seconds).rjust(2, '0')
 
   return '00:' + minutes_padded + ':' + seconds_padded
+
+
+def re_encode_video(input_file, output_file, encoding_format):
+  encoding = None
+
+  if encoding_format == 'mp4':
+    encoding = '-c:v libx264 -profile:v high -crf 17 -pix_fmt yuv420p'
+  elif encoding_format == 'mov':
+    encoding = '-acodec copy -vcodec copy -f mov'
+  else:
+    exit(1)
+
+  re_encode_command = 'ffmpeg -i ' + input_file + ' ' + encoding + ' ' + output_file
+  subprocess.run(re_encode_command, shell=True)
+  os.remove(input_file)
