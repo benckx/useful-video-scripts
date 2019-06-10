@@ -1,66 +1,41 @@
 import os
 import subprocess
-import sys
 
 import math
 
-
-def get_video_duration_seconds(file_name):
-  command = "ffmpeg -i " + file_name + " 2>&1 | grep Duration | cut -d ' ' -f 4 | sed s/,//"
-  result = subprocess.run(command, shell=True, stdout=subprocess.PIPE)
-  duration = result.stdout.decode("utf-8")
-  split = duration.replace('.', ':').split(':')
-  minutes = int(split[1])
-  seconds = int(split[2])
-  return seconds + (60 * minutes)
-
-
-def seconds_to_timestamp(seconds: int):
-  minutes = math.floor(seconds / 60)
-  seconds = seconds - (60 * minutes)
-
-  minutes_padded = str(minutes).rjust(2, '0')
-  seconds_padded = str(seconds).rjust(2, '0')
-
-  return '00:' + minutes_padded + ':' + seconds_padded
+from param_utils import get_param_int, get_param_str
+from video_utils import seconds_to_timestamp, get_video_duration_seconds
 
 
 def main():
-  file_path = sys.argv[1]
-  length = 60
-  offset = 0
-  re_encode = None
+  input_file = get_param_str('i', default=None)
+  length = get_param_int('length', default=60)
+  offset = get_param_int('offset', default=0)
+  re_encode = get_param_str('reencode', default=None)
 
-  if len(sys.argv) > 1:
-    if len(sys.argv) > 1:
-      params = sys.argv[0:]
-      for idx, param in enumerate(params):
-        if param == '--file':
-          file_path = params[idx + 1]
-        elif param == '--length':
-          length = int(params[idx + 1])
-        elif param == '--offset':
-          offset = int(params[idx + 1])
-        elif param == '--reencode':
-          re_encode = params[idx + 1]
-        elif param.startswith('--'):
-          print('param {} not known'.format(param))
-          exit(1)
+  print('input file -> {}'.format(input_file))
+  print('length -> {} sec.'.format(length))
+  print('offset -> {} sec.'.format(offset))
+  print('re_encode -> {}'.format(re_encode))
+
+  if input_file is None:
+    print('input file parameter is mandatory')
+    exit(1)
 
   if re_encode is not None and re_encode != "mp4" and re_encode != "mov":
     print('reencode format {} not known'.format(re_encode))
     exit(1)
 
-  file_name = file_path.split('/')[-1]
-  file_folder = file_path[0:file_path.find(file_name)]
+  file_name = input_file.split('/')[-1]
+  file_folder = input_file[0:input_file.find(file_name)]
   file_name_no_extension = file_name.split('.')[0]
-  duration = get_video_duration_seconds(file_path)
+  duration = get_video_duration_seconds(input_file)
   endpos = seconds_to_timestamp(length)
   nbr_of_bits = math.floor((duration - offset) / length)
 
   print('length: {}'.format(length))
   print('offset: {}'.format(offset))
-  print(file_path)
+  print(input_file)
   print(file_name)
   print(file_name_no_extension)
   print(file_folder)
@@ -80,7 +55,7 @@ def main():
     cut_num = str(count).rjust(3, '0')
     count += 1
     output_file = file_folder + file_name_no_extension + '_' + cut_num + '.mp4'
-    command = 'mencoder -ss ' + ss + ' -endpos ' + endpos + ' -oac copy -ovc copy ' + file_path + ' -o ' + output_file
+    command = 'mencoder -ss ' + ss + ' -endpos ' + endpos + ' -oac copy -ovc copy ' + input_file + ' -o ' + output_file
     subprocess.run(command, shell=True)
 
     if re_encode is not None:
