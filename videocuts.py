@@ -1,9 +1,7 @@
-import subprocess
-
 import math
 
 from param_utils import get_param_int, get_param_str
-from video_utils import seconds_to_timestamp, get_video_duration_seconds, re_encode_video
+from video_utils import get_video_duration_seconds, re_encode_video, extract_video
 
 
 def main():
@@ -29,7 +27,6 @@ def main():
   file_folder = input_file[0:input_file.find(file_name)]
   file_name_no_extension = file_name.split('.')[0]
   duration = get_video_duration_seconds(input_file)
-  endpos = seconds_to_timestamp(length)
   nbr_of_bits = math.floor((duration - offset) / length)
 
   print(input_file)
@@ -48,12 +45,10 @@ def main():
 
   count = 1
   for i in range(nbr_of_bits):
-    ss = seconds_to_timestamp((i * length) + offset)
     cut_num = str(count).rjust(3, '0')
-    count += 1
     output_file = file_folder + file_name_no_extension + '_' + cut_num + '.mp4'
-    command = 'mencoder -ss ' + ss + ' -endpos ' + endpos + ' -oac copy -ovc copy ' + input_file + ' -o ' + output_file
-    subprocess.run(command, shell=True)
+    extract_video(input_file, output_file, length, (i * length) + offset)
+    count += 1
 
     if re_encode_format is not None:
       re_encode_output_file = None

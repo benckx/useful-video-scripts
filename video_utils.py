@@ -37,3 +37,9 @@ def re_encode_video(input_file, output_file, encoding_format):
   re_encode_command = 'ffmpeg -i ' + input_file + ' ' + encoding + ' ' + output_file
   subprocess.run(re_encode_command, shell=True)
   os.remove(input_file)
+
+def extract_video(input_file, output_file, length, offset):
+  ss = seconds_to_timestamp(offset)
+  endpos = seconds_to_timestamp(length)
+  command = 'mencoder -ss ' + ss + ' -endpos ' + endpos + ' -oac copy -ovc copy ' + input_file + ' -o ' + output_file
+  subprocess.run(command, shell=True)
