@@ -1,29 +1,37 @@
 import os
 import subprocess
 
+import math
 from PIL import Image, ImageDraw, ImageFont
 
 black = (0, 0, 0)
 white = (255, 255, 255)
-font = ImageFont.truetype("/usr/share/fonts/truetype/freefont/FreeMono.ttf", 28, encoding="unic")
+font = ImageFont.truetype("/usr/share/fonts/truetype/freefont/FreeMono.ttf", 25, encoding="unic")
 fps = 24
 minutes = 5
 frames_directory = 'frames'
 
 
 def main():
+  if os.path.exists(frames_directory):
+    os.rmdir(frames_directory)
+
   os.mkdir(frames_directory)
   nbr_of_frames = fps * minutes * 60
 
   for i in range(1, nbr_of_frames + 1):
     frame_idx = '{:010d}'.format(i)
     frame_file = frame_idx + '.png'
-    sec = (i / fps)
+    current_sec = (i / fps)
+    current_minute = math.floor(current_sec / 60)
+    current_sec_rest = math.floor(current_sec % 60)
+    timestamp = '{:02d}:{:02d}'.format(current_minute, current_sec_rest)
 
     img = Image.new('RGB', (640, 360), color=white)
     draw = ImageDraw.Draw(img)
     draw.text((50, 50), "frame: {}".format(frame_idx), font=font, fill=black)
-    draw.text((50, 100), "timestamp: {}".format(sec), font=font, fill=black)
+    draw.text((50, 75), "timestamp: {}".format(timestamp), font=font, fill=black)
+    draw.text((50, 100), "elapsed: {}".format(current_sec), font=font, fill=black)
     img.save(frames_directory + '/' + frame_file)
 
   command = 'ffmpeg -framerate {} -f image2 -i {}/%*.png -c:v libx264 -crf 25 -pix_fmt yuv420p {}'.format(fps, frames_directory, 'output.mp4')

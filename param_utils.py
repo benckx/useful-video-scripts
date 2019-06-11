@@ -22,6 +22,8 @@ def get_param(key):
     params = sys.argv[0:]
     for idx, param in enumerate(params):
       if param == '--' + key:
-        return params[idx + 1]
+        value = params[idx + 1]
+        print('{} -> {}'.format(key, value))
+        return value
 
   return None
