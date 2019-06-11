@@ -21,14 +21,19 @@ where you downloaded this repository):
 
 Cut a video in pieces of 30 seconds starting at 10 seconds:
 
-    videocuts --i video.mp4 --length 30 --offset 10 --reencode mov
+    videocuts video.mp4 --length 30 --offset 10 --reencode mov
 
 Or in Python:
 
-    python3 videocuts.py --i /home/user/video.mp4 --length 30 --offset 10 --reencode mov
+    python3 videocuts.py /home/user/video.mp4 --length 30 --offset 10 --reencode mov
 
 #### Parameters
 
 - Parameter `length` is mandatory (`60` by default)
 - Parameter `offset` is optional (`0` by default)
 - Parameter `reencode` is optional (`mp4` or `mov`)
+
+### Compress a video
+
+    videocompress video.mp4 --crf 25
+

@@ -1,19 +1,14 @@
 import math
 
-from param_utils import get_param_int, get_param_str
+from param_utils import get_param_int, get_param_str, get_input_file
 from video_utils import get_video_duration_seconds, re_encode_video, extract_video
 
 
 def main():
-  input_file = get_param_str('i', default=None)
+  input_file = get_input_file()
   length = get_param_int('length', default=60)
   offset = get_param_int('offset', default=0)
   re_encode_format = get_param_str('reencode', default=None)
-
-  print('input file == {}'.format(input_file))
-  print('length == {} sec.'.format(length))
-  print('offset == {} sec.'.format(offset))
-  print('re_encode_format == {}'.format(re_encode_format))
 
   if input_file is None:
     print('input file parameter is mandatory')
@@ -28,13 +23,6 @@ def main():
   file_name_no_extension = file_name.split('.')[0]
   duration = get_video_duration_seconds(input_file)
   nbr_of_bits = math.floor((duration - offset) / length)
-
-  print(input_file)
-  print(file_name)
-  print(file_name_no_extension)
-  print(file_folder)
-  print(duration)
-  print(nbr_of_bits)
 
   count = 1
   for i in range(nbr_of_bits):

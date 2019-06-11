@@ -1,17 +1,12 @@
-from param_utils import get_param_int, get_param_str
+from param_utils import get_param_int, get_param_str, get_input_file
 from video_utils import extract_video, reverse_video, merge_videos
 
 
 def main():
-  input_file = get_param_str('i', default=None)
+  input_file = get_input_file()
   length = get_param_int('length', default=None)
   offset = get_param_int('offset', default=None)
   re_encode_format = get_param_str('reencode', default=None)
-
-  print('input file == {}'.format(input_file))
-  print('length == {} sec.'.format(length))
-  print('offset == {} sec.'.format(offset))
-  print('re_encode_format == {}'.format(re_encode_format))
 
   if input_file is None:
     print('input file parameter is mandatory')
