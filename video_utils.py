@@ -38,8 +38,21 @@ def re_encode_video(input_file, output_file, encoding_format):
   subprocess.run(re_encode_command, shell=True)
   os.remove(input_file)
 
+
 def extract_video(input_file, output_file, length, offset):
   ss = seconds_to_timestamp(offset)
   endpos = seconds_to_timestamp(length)
   command = 'mencoder -ss ' + ss + ' -endpos ' + endpos + ' -oac copy -ovc copy ' + input_file + ' -o ' + output_file
+  subprocess.run(command, shell=True)
+
+
+def reverse_video(input_file, output_file):
+  command = 'ffmpeg -i {} -c:v libx264 -crf 17 -pix_fmt yuv420p -vf reverse {}'.format(input_file, output_file)
+  print(command)
+  subprocess.run(command, shell=True)
+
+
+def merge_videos(input1, input2, output_file):
+  command = 'mencoder -oac copy -ovc copy ' + input1 + ' ' + input2 + ' -o ' + output_file
+  print(command)
   subprocess.run(command, shell=True)
