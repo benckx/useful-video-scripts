@@ -5,7 +5,7 @@ from param_utils import get_param_int, get_input_file
 
 def main():
   input_file = get_input_file()
-  crf = get_param_int('crf', default=25)
+  crf = get_param_int('crf', default=23)
 
   if input_file is None or crf is None:
     print('i and crf parameters are mandatory')

@@ -7,6 +7,8 @@ def get_input_file():
     first_arg = sys.argv[0]
     if not first_arg.startswith('--'):
       return first_arg
+  else:
+    return input_file
 
   return None
 
@@ -14,6 +16,7 @@ def get_input_file():
 def get_param_str(key, default=None):
   result = get_param(key)
   if result is None:
+    print('use default value for {} -> {}'.format(key, default))
     return default
   else:
     return result
@@ -22,6 +25,7 @@ def get_param_str(key, default=None):
 def get_param_int(key, default=None):
   result = get_param(key)
   if result is None:
+    print('use default value for {} -> {}'.format(key, default))
     return default
   else:
     return int(result)

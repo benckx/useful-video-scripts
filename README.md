@@ -17,7 +17,7 @@ where you downloaded this repository):
 
 ## Usage
 
-### Cut a video in pieces
+### Cut in pieces
 
 Cut a video in pieces of 30 seconds starting at 10 seconds:
 
@@ -27,13 +27,16 @@ Or in Python:
 
     python3 videocuts.py /home/user/video.mp4 --length 30 --offset 10 --reencode mov
 
-#### Parameters
-
-- Parameter `length` is mandatory (`60` by default)
+- Parameter `length` is optional (`60` by default)
 - Parameter `offset` is optional (`0` by default)
 - Parameter `reencode` is optional (`mp4` or `mov`)
 
-### Compress a video
+### Compress
 
     videocompress video.mp4 --crf 25
 
+- Parameter `crf` represents the quality. According to [ffmpeg](https://trac.ffmpeg.org/wiki/Encode/H.264): 
+"_The range of the Constant Rate Factor (CRF) scale is 0–51, where 0 is lossless, 23 is 
+the default, and 51 is worst quality possible. A lower value generally leads to higher 
+quality, and a subjectively sane range is 17–28. Consider 17 or 18 to be visually lossless 
+or nearly so; it should look the same or nearly the same as the input but it isn't technically lossless._"
