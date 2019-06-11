@@ -3,7 +3,6 @@
 * ffmpeg
 * mencoder
 
-### Installation
 
     sudo apt install ffmpeg mencoder
 
@@ -27,15 +26,19 @@ Or in Python:
 
     python3 videocuts.py /home/user/video.mp4 --length 30 --offset 10 --reencode mov
 
-- Parameter `length` is optional (`60` by default)
-- Parameter `offset` is optional (`0` by default)
-- Parameter `reencode` is optional (`mp4` or `mov`)
+#### Parameters
+
+- `length` is optional (`60` by default)
+- `offset` is optional (`0` by default)
+- `reencode` is optional (`mp4` or `mov`)
 
 ### Compress
 
-    videocompress video.mp4 --crf 25
+    videocompress video.mp4 --crf 23
 
-- Parameter `crf` represents the quality. According to [ffmpeg](https://trac.ffmpeg.org/wiki/Encode/H.264): 
+#### Parameters
+
+- `crf` is the quality. According to [ffmpeg](https://trac.ffmpeg.org/wiki/Encode/H.264): 
 "_The range of the Constant Rate Factor (CRF) scale is 0–51, where 0 is lossless, 23 is 
 the default, and 51 is worst quality possible. A lower value generally leads to higher 
 quality, and a subjectively sane range is 17–28. Consider 17 or 18 to be visually lossless 
