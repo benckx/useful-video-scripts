@@ -31,6 +31,8 @@ def main():
   length = get_param_int('length', default=None)
   offset = get_param_int('offset', default=0)
   re_encode_format = get_param_str('reencode', default=None)
+  suffix = get_param_str('suffix', default='loop')
+  output = get_param_str('o', default=None)
 
   if input_file is None:
     print('input file parameter is mandatory')
@@ -51,13 +53,29 @@ def main():
 
   loop_part02 = reverse(loop_part01)
 
-  output_loop_file = file_name_no_extension + "_loop01." + file_extension
+  if output is not None:
+    output_loop_file = output
+  else:
+    output_loop_file = file_name_no_extension + '_' + suffix + '.' + file_extension
+
   merge_videos(loop_part01, loop_part02, output_loop_file)
 
   if length is not None:
     files_to_delete.append(loop_part01)
 
   files_to_delete.append(loop_part02)
+
+  if re_encode_format is not None:
+    if output is not None:
+      output_loop_file_re_encoded = output
+    else:
+      output_loop_file_re_encoded = file_name_no_extension + '_' + suffix + '.' + re_encode_format
+
+    if output_loop_file_re_encoded == output_loop_file:
+      os.rename(output_loop_file, '_' + output_loop_file)
+      output_loop_file = '_' + output_loop_file
+
+    re_encode_video(output_loop_file, output_loop_file_re_encoded, re_encode_format)
 
 
 if __name__ == "__main__":
