@@ -1,3 +1,7 @@
+## About
+
+A bunch of scripts that I use for myself. Hopefully you might find them hopeful too.
+
 ## Required packages
 
 * ffmpeg
@@ -8,7 +12,7 @@
 
 ## Add to PATH
 
-It's possible to use the scripts from the terminal by adding the following line 
+You can use the scripts from the terminal by adding the following line 
 at the end of `.bashrc` or `.zshrc`  (change the location to match the location 
 where you downloaded this repository):
 

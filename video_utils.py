@@ -28,14 +28,15 @@ def re_encode_video(input_file, output_file, encoding_format):
   encoding = None
 
   if encoding_format == 'mp4':
-    encoding = '-c:v libx264 -profile:v high -crf 17 -pix_fmt yuv420p'
+    encoding = '-c:v libx264 -crf 17 -pix_fmt yuv420p'
   elif encoding_format == 'mov':
     encoding = '-acodec copy -vcodec copy -f mov'
   else:
     exit(1)
 
-  re_encode_command = 'ffmpeg -i ' + input_file + ' ' + encoding + ' ' + output_file
-  subprocess.run(re_encode_command, shell=True)
+  command = 'ffmpeg -i ' + input_file + ' ' + encoding + ' ' + output_file
+  print(command)
+  subprocess.run(command, shell=True)
   os.remove(input_file)
 
 
@@ -43,6 +44,7 @@ def extract_video(input_file, output_file, length, offset):
   ss = seconds_to_timestamp(offset)
   endpos = seconds_to_timestamp(length)
   command = 'mencoder -ss ' + ss + ' -endpos ' + endpos + ' -oac copy -ovc copy ' + input_file + ' -o ' + output_file
+  print(command)
   subprocess.run(command, shell=True)
 
 

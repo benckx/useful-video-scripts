@@ -42,9 +42,9 @@ def main():
       re_encode_output_file = None
 
       if re_encode_format == 'mp4':
-        re_encode_output_file = file_folder + file_name_no_extension + '_' + cut_num + '_encoded' + '.mp4'
+        re_encode_output_file = file_folder + file_name_no_extension + '_' + cut_num + '_encoded.mp4'
       elif re_encode_format == 'mov':
-        re_encode_output_file = file_folder + file_name_no_extension + '_' + cut_num + '_encoded' + '.mov'
+        re_encode_output_file = file_folder + file_name_no_extension + '_' + cut_num + '_encoded.mov'
       else:
         exit(1)
 
