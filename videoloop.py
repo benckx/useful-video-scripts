@@ -14,8 +14,6 @@ def extract(input_file, length, offset):
   re_encoded_output_file = input_file_no_extension + "_extract_re_encoded." + input_file_extension
   re_encode_video(input_file_extract, re_encoded_output_file, 'mp4')
 
-  files_to_delete.append(input_file_extract)
-
   return re_encoded_output_file
 
 
@@ -65,5 +63,6 @@ def main():
 if __name__ == "__main__":
   files_to_delete = []
   main()
+  print('to delete: {}'.format(files_to_delete))
   for file in files_to_delete:
     os.remove(file)
